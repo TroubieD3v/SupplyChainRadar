@@ -1,0 +1,140 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/manrope";
+@import "@xyflow/react/dist/style.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Palette from the brand sheet:
+ *   Primary #121212 · Secondary #008542 · Tertiary #D97706 · Neutral #64748B
+ * Headline font: Manrope. Body/label font: Inter. Dark is the default theme.
+ */
+:root {
+  --bg: 232 240 255;
+  --surface-low: 244 247 255;
+  --surface: 255 255 255;
+  --surface-high: 219 231 253;
+  --surface-top: 203 219 248;
+  --outline: 184 200 226;
+  --text: 18 18 18;
+  --muted: 71 85 105;
+  --primary: 18 18 18;
+  --on-primary: 255 255 255;
+  --accent: 0 133 66;
+  --accent-soft: 196 252 208;
+  --on-accent: 255 255 255;
+  --warn: 180 83 9;
+  --warn-soft: 255 236 214;
+  --danger: 185 28 28;
+  --danger-soft: 254 226 226;
+  --info: 51 72 98;
+  --info-soft: 219 231 253;
+}
+
+.dark {
+  --bg: 18 18 18;
+  --surface-low: 26 28 32;
+  --surface: 33 36 42;
+  --surface-high: 43 47 56;
+  --surface-top: 54 59 70;
+  --outline: 62 70 86;
+  --text: 238 241 246;
+  --muted: 148 163 184;
+  --primary: 238 241 246;
+  --on-primary: 18 18 18;
+  --accent: 76 198 127;
+  --accent-soft: 0 61 26;
+  --on-accent: 18 18 18;
+  --warn: 255 154 46;
+  --warn-soft: 74 40 6;
+  --danger: 248 113 113;
+  --danger-soft: 78 20 20;
+  --info: 148 163 184;
+  --info-soft: 30 45 68;
+}
+
+@theme inline {
+  --color-bg: rgb(var(--bg));
+  --color-surface-low: rgb(var(--surface-low));
+  --color-surface: rgb(var(--surface));
+  --color-surface-high: rgb(var(--surface-high));
+  --color-surface-top: rgb(var(--surface-top));
+  --color-outline: rgb(var(--outline));
+  --color-ink: rgb(var(--text));
+  --color-muted: rgb(var(--muted));
+  --color-primary: rgb(var(--primary));
+  --color-on-primary: rgb(var(--on-primary));
+  --color-accent: rgb(var(--accent));
+  --color-accent-soft: rgb(var(--accent-soft));
+  --color-on-accent: rgb(var(--on-accent));
+  --color-warn: rgb(var(--warn));
+  --color-warn-soft: rgb(var(--warn-soft));
+  --color-danger: rgb(var(--danger));
+  --color-danger-soft: rgb(var(--danger-soft));
+  --color-info: rgb(var(--info));
+  --color-info-soft: rgb(var(--info-soft));
+  --font-headline: "Manrope Variable", "Inter Variable", system-ui, sans-serif;
+  --font-sans: "Inter Variable", system-ui, "Segoe UI", sans-serif;
+  --radius-card: 1.5rem;
+}
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+.font-headline {
+  font-family: var(--font-headline);
+  letter-spacing: -0.015em;
+}
+::selection {
+  background: rgb(var(--accent) / 0.35);
+}
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.glass {
+  background: rgb(var(--bg) / 0.8);
+  backdrop-filter: blur(16px);
+}
+
+/* React Flow theming */
+.react-flow {
+  --xy-background-color: transparent;
+  --xy-node-border-radius: 14px;
+  --xy-edge-stroke: rgb(var(--muted) / 0.55);
+  --xy-controls-button-background-color: rgb(var(--surface-high));
+  --xy-controls-button-color: rgb(var(--text));
+  --xy-controls-button-border-color: rgb(var(--outline));
+  --xy-minimap-background-color: rgb(var(--surface-low));
+}
+.react-flow__attribution {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
