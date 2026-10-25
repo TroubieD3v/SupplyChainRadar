@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "demo-2026-10-01",
+  "generated": "2026-10-01T00:00:00Z",
+  "synthetic": true,
+  "description": "Synthetic frozen advisory snapshot for offline tests and demos. Not real vulnerability data.",
+  "ecosystems": [
+    "npm",
+    "PyPI"
+  ],
+  "advisories": [
+    {
+      "schema_version": "1.6.0",
+      "id": "DEMO-GHSA-0001",
+      "aliases": [
+        "DEMO-CVE-2026-0001"
+      ],
+      "summary": "Prototype handling flaw in demo-vulnerable-lib",
+      "details": "Prototype handling flaw in demo-vulnerable-lib. SYNTHETIC demo advisory shipped with SupplyChain Radar test fixtures; it does not describe a real package.",
+      "published": "2026-06-01T00:00:00Z",
+      "modified": "2026-06-02T00:00:00Z",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "npm",
+            "name": "demo-vulnerable-lib"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "1.0.0"
+                },
+                {
+                  "fixed": "1.2.5"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://example.invalid/advisories/DEMO-GHSA-0001"
+        },
+        {
+          "type": "FIX",
+          "url": "https://example.invalid/demo-vulnerable-lib/releases"
+        }
+      ],
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+        }
+      ]
+    },
+    {
+      "schema_version": "1.6.0",
+      "id": "DEMO-OSV-0001",
+      "aliases": [
+        "DEMO-CVE-2026-0001"
+      ],
+      "summary": "Same issue republished by a second database (alias duplicate)",
+      "details": "Same issue republished by a second database (alias duplicate). SYNTHETIC demo advisory shipped with SupplyChain Radar test fixtures; it does not describe a real package.",
+      "published": "2026-06-01T00:00:00Z",
+      "modified": "2026-06-02T00:00:00Z",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "npm",
+            "name": "demo-vulnerable-lib"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "1.0.0"
+                },
+                {
+                  "fixed": "1.2.5"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://example.invalid/advisories/DEMO-OSV-0001"
+        },
+        {
+          "type": "FIX",
+          "url": "https://example.invalid/demo-vulnerable-lib/releases"
+        }
+      ],
+      "database_specific": {
+        "severity": "HIGH"
+      }
+    },
+    {
+      "schema_version": "1.6.0",
+      "id": "DEMO-GHSA-0002",
+      "aliases": [
+        "DEMO-CVE-2026-0002"
+      ],
+      "summary": "Input validation weakness in demo-parser",
+      "details": "Input validation weakness in demo-parser. SYNTHETIC demo advisory shipped with SupplyChain Radar test fixtures; it does not describe a real package.",
+      "published": "2026-06-01T00:00:00Z",
+      "modified": "2026-06-02T00:00:00Z",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "npm",
+            "name": "demo-parser"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "0.9.3"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://example.invalid/advisories/DEMO-GHSA-0002"
+        },
+        {
+          "type": "FIX",
+          "url": "https://example.invalid/demo-parser/releases"
+        }
+      ],
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+        }
+      ]
+    },
+    {
+      "schema_version": "1.6.0",
+      "id": "DEMO-GHSA-0003",
+      "aliases": [
+        "DEMO-CVE-2026-0003"
+      ],
+      "summary": "Pattern expansion issue in demo-glob (dev-only in the demo apps)",
+      "details": "Pattern expansion issue in demo-glob (dev-only in the demo apps). SYNTHETIC demo advisory shipped with SupplyChain Radar test fixtures; it does not describe a real package.",
+      "published": "2026-06-01T00:00:00Z",
+      "modified": "2026-06-02T00:00:00Z",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "npm",
+            "name": "demo-glob"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "7.2.0"
+                }
+              ]
+            }
+          ],
+          "versions": [
+            "7.0.0",
+            "7.1.0"
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://example.invalid/advisories/DEMO-GHSA-0003"
+        },
+        {
+          "type": "FIX",
+          "url": "https://example.invalid/demo-glob/releases"
+        }
+      ],
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+        }
+      ]
+    },
+    {
+      "schema_version": "1.6.0",
+      "id": "DEMO-GHSA-0004",
+      "aliases": [
+        "DEMO-CVE-2026-0004"
+      ],
+      "summary": "Deserialisation issue in demo-newdep",
+      "details": "Deserialisation issue in demo-newdep. SYNTHETIC demo advisory shipped with SupplyChain Radar test fixtures; it does not describe a real package.",
+      "published": "2026-06-01T00:00:00Z",
+      "modified": "2026-06-02T00:00:00Z",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "npm",
+            "name": "demo-newdep"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "2.0.1"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://example.invalid/advisories/DEMO-GHSA-0004"
+        },
+        {
+          "type": "FIX",
+          "url": "https://example.invalid/demo-newdep/releases"
+        }
+      ],
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+        }
+      ]
+    },
+    {
+      "schema_version": "1.6.0",
+      "id": "DEMO-PYSEC-0005",
+      "aliases": [
+        "DEMO-CVE-2026-0005"
+      ],
+      "summary": "Template sandbox escape in demo-templating",
+      "details": "Template sandbox escape in demo-templating. SYNTHETIC demo advisory shipped with SupplyChain Radar test fixtures; it does not describe a real package.",
+      "published": "2026-06-01T00:00:00Z",
+      "modified": "2026-06-02T00:00:00Z",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "PyPI",
+            "name": "demo-templating"
+          },
+          "ranges": [
+            {
+              "type": "ECOSYSTEM",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "2.0.5"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://example.invalid/advisories/DEMO-PYSEC-0005"
+        },
+        {
+          "type": "FIX",
+          "url": "https://example.invalid/demo-templating/releases"
+        }
+      ],
+      "database_specific": {
+        "severity": "HIGH"
+      }
+    },
+    {
+      "schema_version": "1.6.0",
+      "id": "DEMO-PYSEC-0006",
+      "aliases": [],
+      "summary": "Session handling issue in demo-flask (source gives no severity)",
+      "details": "Session handling issue in demo-flask (source gives no severity). SYNTHETIC demo advisory shipped with SupplyChain Radar test fixtures; it does not describe a real package.",
+      "published": "2026-06-01T00:00:00Z",
+      "modified": "2026-06-02T00:00:00Z",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "PyPI",
+            "name": "demo-flask"
+          },
+          "ranges": [
+            {
+              "type": "ECOSYSTEM",
+              "events": [
+                {
+                  "introduced": "2.0.0"
+                },
+                {
+                  "fixed": "2.0.3"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://example.invalid/advisories/DEMO-PYSEC-0006"
+        },
+        {
+          "type": "FIX",
+          "url": "https://example.invalid/demo-flask/releases"
+        }
+      ]
+    },
+    {
+      "schema_version": "1.6.0",
+      "id": "DEMO-PYSEC-0007",
+      "aliases": [
+        "DEMO-CVE-2026-0007"
+      ],
+      "summary": "Weak default in demo-crypto up to and including 1.1.0",
+      "details": "Weak default in demo-crypto up to and including 1.1.0. SYNTHETIC demo advisory shipped with SupplyChain Radar test fixtures; it does not describe a real package.",
+      "published": "2026-06-01T00:00:00Z",
+      "modified": "2026-06-02T00:00:00Z",
+      "affected": [
+        {
+          "package": {
+            "ecosystem": "PyPI",
+            "name": "demo-crypto"
+          },
+          "ranges": [
+            {
+              "type": "ECOSYSTEM",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "last_affected": "1.1.0"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://example.invalid/advisories/DEMO-PYSEC-0007"
+        },
+        {
+          "type": "FIX",
+          "url": "https://example.invalid/demo-crypto/releases"
+        }
+      ],
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N"
+        }
+      ]
+    }
+  ]
+}

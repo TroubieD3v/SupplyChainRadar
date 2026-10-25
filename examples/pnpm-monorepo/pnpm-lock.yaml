@@ -1,0 +1,83 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      demo-test-runner:
+        specifier: ^3.0.0
+        version: 3.0.0
+
+  packages/api:
+    dependencies:
+      demo-framework-b:
+        specifier: ^4.0.0
+        version: 4.0.0
+      demo-shared:
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/shared:
+    dependencies:
+      demo-vulnerable-lib:
+        specifier: ^1.2.0
+        version: 1.2.0
+
+  packages/web:
+    dependencies:
+      demo-framework-a:
+        specifier: ^2.0.0
+        version: 2.0.0(demo-react@18.2.0)
+      demo-react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      demo-shared:
+        specifier: workspace:*
+        version: link:../shared
+
+packages:
+
+  demo-framework-a@2.0.0:
+    resolution: {integrity: sha512-aaa}
+    peerDependencies:
+      demo-react: ^18.0.0
+
+  demo-framework-b@4.0.0:
+    resolution: {integrity: sha512-bbb}
+
+  demo-glob@7.0.0:
+    resolution: {integrity: sha512-ccc}
+
+  demo-react@18.2.0:
+    resolution: {integrity: sha512-ddd}
+
+  demo-test-runner@3.0.0:
+    resolution: {integrity: sha512-eee}
+
+  demo-vulnerable-lib@1.2.0:
+    resolution: {integrity: sha512-fff}
+
+snapshots:
+
+  demo-framework-a@2.0.0(demo-react@18.2.0):
+    dependencies:
+      demo-react: 18.2.0
+      demo-vulnerable-lib: 1.2.0
+
+  demo-framework-b@4.0.0:
+    dependencies:
+      demo-vulnerable-lib: 1.2.0
+
+  demo-glob@7.0.0: {}
+
+  demo-react@18.2.0: {}
+
+  demo-test-runner@3.0.0:
+    dependencies:
+      demo-glob: 7.0.0
+
+  demo-vulnerable-lib@1.2.0: {}

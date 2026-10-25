@@ -1,0 +1,28 @@
+schema_version: 1
+name: strict-new-findings
+description: Block new critical advisories, warn on high runtime advisories, fail on expired exceptions.
+rules:
+  - id: no-new-critical
+    when: newly_introduced_confirmed_advisory
+    min_severity: critical
+    action: fail
+  - id: high-runtime-review
+    when: confirmed_advisory
+    min_severity: high
+    dependency_scope: runtime
+    action: warn
+  - id: expired-exception
+    when: exception_expired
+    action: fail
+unknown_data:
+  mode: warn
+licenses:
+  deny: ["AGPL-*"]
+  review: ["GPL-*"]
+exceptions:
+  - advisory: DEMO-GHSA-0003
+    package: demo-glob
+    status: accepted_risk
+    rationale: "Dev-only test runner dependency; not shipped in production bundles."
+    expires: 2027-03-31
+    author: security@example.invalid

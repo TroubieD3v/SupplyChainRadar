@@ -1,0 +1,106 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:3e671687-395b-41f5-a30f-a58921a69b79",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-01T00:00:00Z",
+    "component": {
+      "type": "application",
+      "bom-ref": "demo-sbom-app",
+      "name": "demo-sbom-app",
+      "version": "1.0.0"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/demo-framework-a@2.0.0",
+      "name": "demo-framework-a",
+      "version": "2.0.0",
+      "purl": "pkg:npm/demo-framework-a@2.0.0",
+      "scope": "required",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/demo-vulnerable-lib@1.2.0",
+      "name": "demo-vulnerable-lib",
+      "version": "1.2.0",
+      "purl": "pkg:npm/demo-vulnerable-lib@1.2.0",
+      "scope": "required",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/demo-parser@0.9.0",
+      "name": "demo-parser",
+      "version": "0.9.0",
+      "purl": "pkg:npm/demo-parser@0.9.0",
+      "scope": "required",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/demo-http@1.4.0",
+      "name": "demo-http",
+      "version": "1.4.0",
+      "purl": "pkg:npm/demo-http@1.4.0",
+      "scope": "required",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "demo-sbom-app",
+      "dependsOn": [
+        "pkg:npm/demo-framework-a@2.0.0",
+        "pkg:npm/demo-http@1.4.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/demo-framework-a@2.0.0",
+      "dependsOn": [
+        "pkg:npm/demo-vulnerable-lib@1.2.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/demo-http@1.4.0",
+      "dependsOn": [
+        "pkg:npm/demo-parser@0.9.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/demo-vulnerable-lib@1.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/demo-parser@0.9.0",
+      "dependsOn": []
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+# Partial coverage demo: only exact pins can be matched to advisories.
+demo-flask==2.0.1
+demo-requests>=2.0
+demo-numpy
+demo-pandas==1.0.0 ; python_version < "3.9"
+Demo_Crypto==1.1.0 \
+    --hash=sha256:0000000000000000000000000000000000000000000000000000000000000000
+-r base.txt
+-e git+https://github.com/example/demo-local.git#egg=demo-local
+--extra-index-url https://ci-user:not-a-real-password@packages.example.invalid/simple

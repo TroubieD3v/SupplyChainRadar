@@ -1,0 +1,18 @@
+{
+  "description": "Expected confirmed matches against snapshot demo-2026-10-01 (hand-derived from the fixture design, not copied from scanner output).",
+  "snapshot": "demo-2026-10-01",
+  "findings": [
+    [
+      "demo-glob",
+      "7.0.0",
+      "DEMO-GHSA-0003",
+      "critical"
+    ],
+    [
+      "demo-newdep",
+      "2.0.0",
+      "DEMO-GHSA-0004",
+      "critical"
+    ]
+  ]
+}
