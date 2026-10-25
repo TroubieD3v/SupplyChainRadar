@@ -29,9 +29,10 @@ Verify downloads with `SHA256SUMS.txt`.
 - **Playwright journey** (12 steps: empty state → import → findings → paths → triage → graph → candidate & what-if remediation → advisory-refresh comparison → policy gate → SARIF download → provider outage → keyboard/theme) passed locally in Microsoft Edge.
 - Live check against `api.osv.dev` (one real package) passed once; it is an optional, non-gating test.
 - The wheel was built and run from a clean virtualenv.
+- GitHub Actions CI is green on the release commit: backend on Python 3.12 and 3.13, security-regression, frontend, Playwright E2E on Linux/Chromium, and the container job (`docker compose up --build --wait` + smoke test).
 
 ## Known gaps (also in `docs/limitations.md`)
 - Not a reachability/exploitability analyser; no malware detection.
 - **Not implemented:** OpenSSF Scorecard and EPSS adapters, PostgreSQL/Redis (SQLite + in-process jobs instead), SPDX JSON-Schema validation, Maven/Go/Cargo lockfile parsers (SBOM only).
 - Benchmarks use synthetic fixtures (not independent validation); browser performance on very large graphs was not measured.
-- CI workflows (Python 3.12/3.13 matrix, container job) are defined in `.github/workflows`; development and the local gate ran on Windows with Python 3.14.
+- Local development and the local gate ran on Windows with Python 3.14; Docker was verified in CI only (the local Docker daemon was unavailable).
