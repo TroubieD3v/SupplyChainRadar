@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: pip install -e "backend[dev]" types-jsonschema build
+      - run: pytest backend/tests -p no:cacheprovider
+      - run: npm ci && npm run lint && npm run typecheck && npm test && npm run build
+        working-directory: frontend
+      - run: python -m build --outdir dist backend
+      - name: Web UI bundle
+        run: tar -czf dist/supplychain-radar-ui-${GITHUB_REF_NAME}.tar.gz -C frontend/dist .
+      - name: Checksums
+        run: cd dist && sha256sum * > SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-dist
+          path: dist
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-dist
+          path: dist
+      - name: Create (or update) the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" dist/* --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" dist/*               --title "SupplyChain Radar ${GITHUB_REF_NAME}"               --notes-file docs/release-notes-${GITHUB_REF_NAME}.md
+          fi

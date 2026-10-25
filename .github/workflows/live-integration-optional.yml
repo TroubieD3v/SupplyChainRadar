@@ -1,0 +1,22 @@
+name: Live OSV integration (optional)
+
+# Not part of the baseline gate: it needs the network and depends on a third-party service.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  live-osv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e "backend[dev]"
+      - name: Query api.osv.dev for one well-known vulnerable package
+        run: SCRADAR_LIVE=1 pytest backend/tests/test_live_osv.py -p no:cacheprovider
