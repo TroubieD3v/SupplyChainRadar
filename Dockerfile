@@ -8,14 +8,14 @@ COPY frontend/ ./
 RUN npm run build
 
 # ---- python wheel -------------------------------------------------------------------------
-FROM python:3.12-slim AS wheel
+FROM python:3.15-slim AS wheel
 WORKDIR /src
 RUN pip install --no-cache-dir build
 COPY backend/ ./backend/
 RUN python -m build --wheel --outdir /dist ./backend
 
 # ---- runtime ------------------------------------------------------------------------------
-FROM python:3.12-slim AS runtime
+FROM python:3.15-slim AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     SCRADAR_DATA_DIR=/data SCRADAR_CACHE_DIR=/data/cache \
     SCRADAR_STATIC_DIR=/app/ui SCRADAR_EXAMPLES_DIR=/app \
