@@ -5,6 +5,8 @@ const ROOT = resolve(__dirname, "../..");
 const ex = (...p: string[]) => resolve(ROOT, "examples", ...p);
 
 async function pick(sel: Locator, re: RegExp) {
+  // Scan lists load asynchronously after navigation; wait for the option instead of reading an empty list.
+  await expect(sel.locator("option").filter({ hasText: re })).not.toHaveCount(0);
   const opts = await sel.locator("option").evaluateAll((os) => os.map((o) => [(o as HTMLOptionElement).value, o.textContent ?? ""]));
   const hit = opts.find(([, t]) => re.test(t));
   if (!hit) throw new Error(`no option matches ${re}: ${JSON.stringify(opts)}`);
