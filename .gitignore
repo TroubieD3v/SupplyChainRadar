@@ -18,5 +18,3 @@ tests/e2e/playwright-report/
 *.db-wal
 *.db-shm
 .env
-.claude/settings.local.json
-.claude/
