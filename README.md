@@ -146,4 +146,4 @@ make benchmark
 
 Layout: `backend/` (engine, CLI, API, tests) · `frontend/` (React + Vite + Tailwind) · `examples/` (demo projects) · `fixtures/` (frozen advisory snapshots, expected results) · `tests/e2e/` · `docs/`.
 
-Deviations from the original brief (SQLite instead of Postgres, in-process job runner instead of Redis, no Scorecard/EPSS adapters) are listed in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) and [docs/adr](docs/adr). Contributions: [CONTRIBUTING.md](CONTRIBUTING.md). License: [MIT](LICENSE).
+Deviations from the original brief (SQLite instead of Postgres, in-process job runner instead of Redis, no Scorecard/EPSS adapters) are listed in [implementation status](docs/implementation-status.md) and [docs/adr](docs/adr). Contributions: [CONTRIBUTING.md](CONTRIBUTING.md). License: [MIT](LICENSE).

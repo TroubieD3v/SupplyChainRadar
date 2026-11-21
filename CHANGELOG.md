@@ -15,4 +15,4 @@ First release.
 - Docker Compose stack (loopback only), CI workflows, benchmarks, threat model, ADRs.
 
 ### Known gaps
-See [docs/limitations.md](docs/limitations.md) and [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md): no OpenSSF Scorecard/EPSS adapters, SQLite instead of PostgreSQL/Redis, SPDX validated structurally only.
+See [docs/limitations.md](docs/limitations.md) and [implementation status](docs/implementation-status.md): no OpenSSF Scorecard/EPSS adapters, SQLite instead of PostgreSQL/Redis, SPDX validated structurally only.

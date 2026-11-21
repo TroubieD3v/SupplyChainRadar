@@ -18,12 +18,12 @@ Source of truth: the project specification (SupplyChain Radar v1.0). This file r
 
 ## Deviations from the brief (all deliberate, all documented)
 
-1. **SQLite + in-process thread pool** instead of PostgreSQL/Redis/Alembic — [ADR 0001](docs/adr/0001-sqlite-and-in-process-jobs.md).
-2. **Tailwind 4 + own primitives** instead of shadcn/ui; self-hosted fonts and icons — [ADR 0002](docs/adr/0002-ui-stack.md).
+1. **SQLite + in-process thread pool** instead of PostgreSQL/Redis/Alembic — [ADR 0001](adr/0001-sqlite-and-in-process-jobs.md).
+2. **Tailwind 4 + own primitives** instead of shadcn/ui; self-hosted fonts and icons — [ADR 0002](adr/0002-ui-stack.md).
 3. **pip/venv** instead of `uv` (not installed on the dev machine); `make setup` documents the flow.
 4. **OpenSSF Scorecard (P1) and EPSS are not implemented.** The provider status endpoint says so. CISA KEV is supported from a local file.
 5. SPDX 2.3 is validated structurally, not against a JSON Schema.
-6. Normalised per-entity relational tables are replaced by immutable JSON snapshots plus indexed summaries ([data-model.md](docs/data-model.md)).
+6. Normalised per-entity relational tables are replaced by immutable JSON snapshots plus indexed summaries ([data-model.md](data-model.md)).
 
 ## Acceptance matrix (P0 = must pass)
 
