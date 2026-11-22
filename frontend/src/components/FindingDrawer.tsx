@@ -11,7 +11,7 @@ export function PathList({ paths, names, truncated, warning }: { paths: Finding[
   return (
     <ol className="space-y-2">
       {paths.map((p, i) => (
-        <li key={i} className="flex flex-wrap items-center gap-1.5 rounded-2xl bg-surface-low p-3 text-sm">
+        <li key={i} className="flex flex-wrap items-center gap-1.5 rounded-[3px] bg-surface-low p-3 text-[12.5px]">
           {p.nodes.map((n, j) => (
             <span key={j} className="flex items-center gap-1.5">
               {j > 0 && (
@@ -19,7 +19,7 @@ export function PathList({ paths, names, truncated, warning }: { paths: Finding[
                   →
                 </span>
               )}
-              <span className={"rounded-lg px-2 py-0.5 font-mono text-xs " + (j === p.nodes.length - 1 ? "bg-warn-soft text-warn" : j === 0 ? "bg-primary text-on-primary" : "bg-surface-high")}>{names[n] ?? n}</span>
+              <span className={"rounded-[3px] px-2 py-0.5 font-mono text-xs " + (j === p.nodes.length - 1 ? "bg-warn-soft text-warn" : j === 0 ? "bg-primary text-on-primary" : "bg-surface-high")}>{names[n] ?? n}</span>
             </span>
           ))}
           {p.inferred && <Chip tone="warn">inferred edge</Chip>}
@@ -88,13 +88,13 @@ function FindingBody({ f, onChanged }: { f: Finding; onChanged: () => void }) {
           ))}
           {f.triage.expired && <Chip tone="danger">exception expired</Chip>}
         </div>
-        <h3 className="mt-3 text-2xl font-semibold">{a.summary ?? "No summary provided"}</h3>
-        {a.details && a.details !== a.summary && <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-muted">{a.details}</p>}
+        <h3 className="mt-3 text-[13px] font-semibold">{a.summary ?? "No summary provided"}</h3>
+        {a.details && a.details !== a.summary && <p className="mt-2 whitespace-pre-wrap text-[12.5px] leading-relaxed text-muted">{a.details}</p>}
       </section>
 
       <section>
         <Label>Evidence</Label>
-        <dl className="mt-3 grid grid-cols-[130px_1fr] gap-x-4 gap-y-2 text-sm">
+        <dl className="mt-3 grid grid-cols-[130px_1fr] gap-x-4 gap-y-2 text-[12.5px]">
           <dt className="text-muted">Package</dt>
           <dd className="font-mono text-xs">{f.ecosystem}/{f.package}@{f.version} {f.purl && <span className="text-muted">· {f.purl}</span>}</dd>
           <dt className="text-muted">Aliases</dt>
@@ -128,7 +128,7 @@ function FindingBody({ f, onChanged }: { f: Finding; onChanged: () => void }) {
         <div className="mt-3">
           <PathList paths={f.paths.paths} names={f.names ?? {}} truncated={f.paths.truncated} warning={f.paths.warning} />
           {f.paths.introducers.length > 0 && (
-            <p className="mt-3 text-sm text-muted">
+            <p className="mt-3 text-[12.5px] text-muted">
               Introduced through: <span className="font-semibold text-ink">{f.paths.introducers.map((i) => f.names?.[i] ?? i).join(", ")}</span>. Removing one parent does not remove the package while another path remains.
             </p>
           )}
@@ -137,7 +137,7 @@ function FindingBody({ f, onChanged }: { f: Finding; onChanged: () => void }) {
 
       <section>
         <Label>Possible fix</Label>
-        <div className="mt-3 space-y-3 rounded-2xl bg-surface-low p-4 text-sm">
+        <div className="mt-3 space-y-3 rounded-[3px] bg-surface-low p-4 text-[12.5px]">
           {a.fixed_versions.length ? (
             <div>
               Fixed in <span className="font-mono font-semibold">{a.fixed_versions.join(", ")}</span> <span className="text-muted">(from the advisory's affected ranges)</span>
@@ -154,10 +154,10 @@ function FindingBody({ f, onChanged }: { f: Finding; onChanged: () => void }) {
 
       <section>
         <Label>Priority score</Label>
-        <div className="mt-3 rounded-2xl bg-surface-low p-4">
+        <div className="mt-3 rounded-[3px] bg-surface-low p-4">
           <div className="flex items-baseline gap-3">
-            <span className="font-headline text-4xl font-semibold">{f.priority.score ?? "—"}</span>
-            <span className="text-sm text-muted">{f.priority.score == null ? "unscored: severity unknown" : "/ 100"} · confidence {Math.round(f.priority.confidence * 100)}% of weight known</span>
+            <span className="font-mono text-[22px] font-medium">{f.priority.score ?? "—"}</span>
+            <span className="text-[12.5px] text-muted">{f.priority.score == null ? "unscored: severity unknown" : "/ 100"} · confidence {Math.round(f.priority.confidence * 100)}% of weight known</span>
           </div>
           <ul className="mt-4 space-y-3">
             {f.priority.factors.map((x) => (
@@ -179,7 +179,7 @@ function FindingBody({ f, onChanged }: { f: Finding; onChanged: () => void }) {
         <section>
           <Label>References</Label>
           <p className="mt-1 text-xs text-muted">Shown as text; this tool never fetches them.</p>
-          <ul className="mt-2 space-y-1 text-sm">
+          <ul className="mt-2 space-y-1 text-[12.5px]">
             {a.references.slice(0, 10).map((r, i) => (
               <li key={i} className="flex items-center gap-2">
                 <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted" aria-hidden />
@@ -199,8 +199,8 @@ function FindingBody({ f, onChanged }: { f: Finding; onChanged: () => void }) {
 
       <section>
         <Label>Triage</Label>
-        <div className="mt-3 space-y-3 rounded-2xl bg-surface-low p-4">
-          <div className="text-sm">
+        <div className="mt-3 space-y-3 rounded-[3px] bg-surface-low p-4">
+          <div className="text-[12.5px]">
             Current status: <span className="font-semibold">{f.triage.status.replace(/_/g, " ")}</span>
             {f.triage.expires && <span className="text-muted"> · until {f.triage.expires}</span>}
             {f.triage.rationale && <div className="mt-1 text-muted">“{f.triage.rationale}”</div>}

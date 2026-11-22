@@ -86,18 +86,18 @@ export default function Policies() {
         Policy rules gate pull requests. Unknown severity is never treated as “below threshold”, and rules about <i>new</i> findings need a baseline scan — they fail loudly without one.
       </PageHeader>
 
-      <div className="grid gap-6 xl:grid-cols-2">
+      <div className="grid gap-3 xl:grid-cols-2">
         <Card>
-          <div className="flex items-center justify-between"><h2 className="text-xl font-semibold">Policy YAML</h2>{data && <Chip tone={data.is_default ? "neutral" : "accent"}>{data.is_default ? "built-in default" : `saved v${data.version}`}</Chip>}</div>
+          <div className="flex items-center justify-between"><h2 className="text-[13px] font-semibold">Policy YAML</h2>{data && <Chip tone={data.is_default ? "neutral" : "accent"}>{data.is_default ? "built-in default" : `saved v${data.version}`}</Chip>}</div>
           <Textarea aria-label="Policy YAML" spellCheck={false} rows={22} className="mt-4 font-mono !text-[12.5px] leading-relaxed" value={text} onChange={(e) => setText(e.target.value)} />
           {msg && <div className="mt-3"><Note tone={msg.ok ? "accent" : "warn"}>{msg.text}</Note></div>}
           <div className="mt-4 flex gap-2"><Button variant="soft" onClick={validate}>Validate</Button><Button onClick={save} loading={busy}>Save policy</Button></div>
         </Card>
 
-        <div className="space-y-6">
+        <div className="space-y-3">
           <Card tone="low">
-            <h2 className="text-xl font-semibold">Evaluate</h2>
-            {done.length === 0 ? <p className="mt-3 text-sm text-muted">No finished scans to evaluate yet.</p> : (
+            <h2 className="text-[13px] font-semibold">Evaluate</h2>
+            {done.length === 0 ? <p className="mt-3 text-[12.5px] text-muted">No finished scans to evaluate yet.</p> : (
               <>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <Field label="Scan to evaluate"><Select value={target} onChange={(e) => setTarget(e.target.value)}>{done.map((s) => <option key={s.id} value={s.id}>{s.label ?? "scan"} · {new Date(s.created_at).toLocaleDateString()}</option>)}</Select></Field>
@@ -109,10 +109,10 @@ export default function Policies() {
             {err && <div className="mt-4"><ErrorBox error={err} /></div>}
             {result && (
               <div className="mt-5 space-y-3">
-                <div className="flex items-center gap-3"><Chip tone={tone[result.outcome]}>{result.outcome}</Chip><span className="text-sm text-muted">CLI exit code <span className="font-mono font-semibold text-ink">{result.exit_code}</span> · baseline {result.baseline_used ? "used" : "not used"}</span></div>
-                {[...result.violations, ...result.warnings].map((v, i) => <div key={i} className="rounded-xl bg-surface p-3 text-sm"><Chip tone={v.action === "fail" ? "danger" : "warn"}>{v.action}</Chip> <span className="font-semibold">{v.rule_id}</span> — {v.message}</div>)}
-                {result.suppressed.map((s, i) => <div key={i} className="rounded-xl bg-surface p-3 text-sm text-muted">Suppressed {s.advisory_id} on {s.package}: {s.status.replace("_", " ")} until {s.expires} — “{s.rationale}”</div>)}
-                {result.expired_exceptions.map((s, i) => <div key={i} className="rounded-xl bg-danger-soft p-3 text-sm text-danger">Exception for {s.advisory_id} on {s.package} expired {s.expires}</div>)}
+                <div className="flex items-center gap-3"><Chip tone={tone[result.outcome]}>{result.outcome}</Chip><span className="text-[12.5px] text-muted">CLI exit code <span className="font-mono font-semibold text-ink">{result.exit_code}</span> · baseline {result.baseline_used ? "used" : "not used"}</span></div>
+                {[...result.violations, ...result.warnings].map((v, i) => <div key={i} className="rounded-[3px] bg-surface p-3 text-[12.5px]"><Chip tone={v.action === "fail" ? "danger" : "warn"}>{v.action}</Chip> <span className="font-semibold">{v.rule_id}</span> — {v.message}</div>)}
+                {result.suppressed.map((s, i) => <div key={i} className="rounded-[3px] bg-surface p-3 text-[12.5px] text-muted">Suppressed {s.advisory_id} on {s.package}: {s.status.replace("_", " ")} until {s.expires} — “{s.rationale}”</div>)}
+                {result.expired_exceptions.map((s, i) => <div key={i} className="rounded-[3px] bg-danger-soft p-3 text-[12.5px] text-danger">Exception for {s.advisory_id} on {s.package} expired {s.expires}</div>)}
                 <div className="text-xs text-muted">Unknown data: {Object.entries(result.unknown_data).filter(([, v]) => v).map(([k, v]) => `${k.replace(/_/g, " ")} ${v}`).join(", ") || "none"}</div>
                 {result.notes.map((n, i) => <p key={i} className="text-xs text-muted">• {n}</p>)}
               </div>
@@ -120,15 +120,15 @@ export default function Policies() {
           </Card>
           <Card tone="low">
             <Label>Exit codes</Label>
-            <ul className="mt-3 space-y-1.5 text-sm"><li><b className="font-mono">0</b> scan completed, policy passed (warnings allowed)</li><li><b className="font-mono">1</b> policy gate failed</li><li><b className="font-mono">2</b> malformed input, bad policy or usage error</li><li><b className="font-mono">3</b> scanner / provider error</li><li><b className="font-mono">4</b> inconclusive (incomplete data with <code>unknown_data.mode: fail</code>)</li></ul>
+            <ul className="mt-3 space-y-1.5 text-[12.5px]"><li><b className="font-mono">0</b> scan completed, policy passed (warnings allowed)</li><li><b className="font-mono">1</b> policy gate failed</li><li><b className="font-mono">2</b> malformed input, bad policy or usage error</li><li><b className="font-mono">3</b> scanner / provider error</li><li><b className="font-mono">4</b> inconclusive (incomplete data with <code>unknown_data.mode: fail</code>)</li></ul>
           </Card>
         </div>
       </div>
 
-      <section className="mt-10 grid gap-6 lg:grid-cols-2">
-        <div><h2 className="mb-3 text-xl font-semibold">CLI</h2>
+      <section className="mt-4 grid gap-3 lg:grid-cols-2">
+        <div><h2 className="mb-3 text-[13px] font-semibold">CLI</h2>
           <CopyBlock label="CLI commands" text={`# reproducible offline scan against a frozen snapshot\nsupplychain-radar scan . --offline --advisory-fixture fixtures/osv/frozen-advisories.json -f json -o scan.json\n\n# gate: fail on NEW critical advisories relative to a baseline\nsupplychain-radar policy check scan.json --policy policy.yaml --baseline baseline.json\necho "exit code: $?"\n\n# compare two scans, export SARIF\nsupplychain-radar compare baseline.json scan.json -f html -o diff.html\nsupplychain-radar report scan.json -f sarif -o results.sarif`} /></div>
-        <div><h2 className="mb-3 text-xl font-semibold">GitHub Actions</h2><CopyBlock label="GitHub Actions workflow" text={GH_ACTION} /></div>
+        <div><h2 className="mb-3 text-[13px] font-semibold">GitHub Actions</h2><CopyBlock label="GitHub Actions workflow" text={GH_ACTION} /></div>
       </section>
     </>
   );

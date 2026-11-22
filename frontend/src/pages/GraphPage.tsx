@@ -18,13 +18,13 @@ const GNode = memo(function GNode({ data, selected }: NodeProps) {
   return (
     <div
       style={{ width: NODE_W, height: NODE_H, borderColor: sev ? SEV_COLOR[sev] : undefined, opacity: d.dim ? 0.28 : 1 }}
-      className={cx("flex flex-col justify-center rounded-[14px] border-2 px-3 text-left transition", app ? "border-accent bg-primary text-on-primary" : "border-outline bg-surface text-ink", selected && "ring-2 ring-accent ring-offset-2 ring-offset-bg", d.match && "ring-2 ring-warn")}
+      className={cx("flex flex-col justify-center rounded-[3px] border-[1.5px] px-2.5 text-left transition", app ? "border-primary bg-primary text-on-primary" : "border-outline bg-surface text-ink", selected && "outline outline-1 outline-offset-2 outline-accent", d.match && "outline outline-1 outline-offset-2 outline-warn")}
     >
       <Handle type="target" position={Position.Left} className="!h-2 !w-2 !border-0 !bg-muted" />
-      <div className="truncate text-[13px] font-semibold leading-tight">{d.label}</div>
+      <div className="truncate text-[12.5px] font-medium leading-tight">{d.label}</div>
       <div className={cx("flex items-center gap-1.5 truncate font-mono text-[11px]", app ? "opacity-70" : "text-muted")}>
         {d.version ?? d.kind}
-        {d.findings > 0 && <span className="rounded-full px-1.5 font-sans text-[10px] font-bold text-[#121212]" style={{ background: SEV_COLOR[sev ?? "unknown"] }}>{d.findings}</span>}
+        {d.findings > 0 && <span className="rounded-[2px] px-1 font-sans text-[10px] font-medium text-bg" style={{ background: SEV_COLOR[sev ?? "unknown"] }}>{d.findings}</span>}
         {d.state && !["evaluated", "cached"].includes(d.state) && d.kind !== "application" && <span title={`advisory state: ${d.state}`} className="font-sans text-[10px] text-warn">?</span>}
       </div>
       <Handle type="source" position={Position.Right} className="!h-2 !w-2 !border-0 !bg-muted" />
@@ -84,6 +84,10 @@ function Body({ scanId }: { scanId: string }) {
         : [],
     [view, laid, selNode, anc, q],
   );
+  const dark = document.documentElement.classList.contains("dark");
+  const ON = dark ? "#8fb4d8" : "#2c5d8a";
+  const OFF = dark ? "#5d636b" : "#9aa2ab";
+  const INF = dark ? "#d0a866" : "#87601a";
   const edges: Edge[] = useMemo(
     () =>
       view
@@ -96,17 +100,17 @@ function Body({ scanId }: { scanId: string }) {
               target: e.target,
               selected: e.id === selEdge,
               animated: Boolean(on),
-              markerEnd: { type: MarkerType.ArrowClosed, width: 14, height: 14, color: on ? "rgb(76,198,127)" : "rgb(124,138,160)" },
+              markerEnd: { type: MarkerType.ArrowClosed, width: 13, height: 13, color: on ? ON : OFF },
               style: {
-                stroke: on ? "rgb(76,198,127)" : inferred ? "rgb(245,158,11)" : "rgb(124,138,160)",
-                strokeWidth: on ? 2.4 : 1.4,
+                stroke: on ? ON : inferred ? INF : OFF,
+                strokeWidth: on ? 2 : 1.2,
                 opacity: anc && !on ? 0.12 : 1,
                 strokeDasharray: e.type === "dev" ? "6 4" : e.type === "optional" ? "2 4" : inferred ? "3 3" : undefined,
               },
             };
           })
         : [],
-    [view, anc, selEdge],
+    [view, anc, selEdge, ON, OFF, INF],
   );
 
   useEffect(() => {
@@ -125,22 +129,22 @@ function Body({ scanId }: { scanId: string }) {
         Follow how a package reached your project. Select a node to highlight every path from the application to it; select an edge to see the exact lockfile entry that declared it.
       </PageHeader>
 
-      <Card tone="low" className="mb-4 !p-4">
-        <div className="flex flex-wrap items-center gap-3">
+      <Card className="mb-3 !px-3 !py-1.5">
+        <div className="flex flex-wrap items-center gap-2">
           <Segmented label="Graph mode" value={mode} onChange={setMode} options={[{ id: "vulnerable", label: "Vulnerable paths" }, { id: "full", label: "Full graph" }, { id: "focus", label: "Focus" }]} />
           <div className="relative min-w-[200px] flex-1 sm:max-w-xs">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden />
-            <Input aria-label="Find a package in the graph" className="!py-2 !pl-9" placeholder="Find package…" value={query} onChange={(e) => setQuery(e.target.value)} />
+            <Search className="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-dim" aria-hidden />
+            <Input aria-label="Find a package in the graph" className="!pl-6" placeholder="Find package…" value={query} onChange={(e) => setQuery(e.target.value)} />
           </div>
-          <label className="flex items-center gap-2 text-sm text-muted"><input type="checkbox" checked={hideDev} onChange={(e) => setHideDev(e.target.checked)} className="accent-[rgb(var(--accent))]" /> Hide dev-only</label>
+          <label className="flex items-center gap-2 text-[12.5px] text-muted"><input type="checkbox" checked={hideDev} onChange={(e) => setHideDev(e.target.checked)} className="accent-[rgb(var(--accent))]" /> Hide dev-only</label>
           <div className="ml-auto flex gap-2">
             <Button size="sm" variant="outline" disabled={!view} onClick={() => view && saveBlob(new Blob([JSON.stringify(view, null, 2)], { type: "application/json" }), `graph-${scanId.slice(0, 8)}.json`)}><Download className="h-3.5 w-3.5" /> JSON</Button>
             <Button size="sm" variant="outline" disabled={!view || !laid} onClick={() => view && laid && saveBlob(new Blob([toSvg(view, laid)], { type: "image/svg+xml" }), `graph-${scanId.slice(0, 8)}.svg`)}><Download className="h-3.5 w-3.5" /> SVG</Button>
           </div>
         </div>
         {matches.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-2 text-xs">
-            {matches.slice(0, 8).map((m) => <button key={m.id} onClick={() => setSelNode(m.id)} className="rounded-full bg-warn-soft px-3 py-1 font-semibold text-warn">{m.label}{m.version ? `@${m.version}` : ""}</button>)}
+          <div className="mt-1.5 flex flex-wrap gap-1 text-xs">
+            {matches.slice(0, 8).map((m) => <button key={m.id} onClick={() => setSelNode(m.id)} className="rounded-[3px] border border-warn/40 bg-warn-soft px-2 py-0.5 font-medium text-warn">{m.label}{m.version ? `@${m.version}` : ""}</button>)}
           </div>
         )}
       </Card>
@@ -148,11 +152,11 @@ function Body({ scanId }: { scanId: string }) {
       {mode === "focus" && !focus && <Note tone="info">Select a node in another mode and press “Focus on this package”, or pick one here.<div className="mt-2 text-xs">Tip: focus shows all paths into the package and its direct dependencies.</div></Note>}
       {error && <ErrorBox error={error} onRetry={reload} />}
       {loading && !data && <Spinner label="Laying out graph" />}
-      {view?.note && <p className="mb-3 text-sm text-muted">{view.note}</p>}
+      {view?.note && <p className="mb-3 text-[12.5px] text-muted">{view.note}</p>}
 
       {view && (
-        <div className="grid gap-4 xl:grid-cols-[1fr_340px]">
-          <div className="h-[640px] overflow-hidden rounded-3xl border border-outline/40 bg-surface-low" role="application" aria-label={`Dependency graph with ${view.nodes.length} nodes`}>
+        <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="h-[620px] overflow-hidden rounded-[3px] border border-outline bg-surface-low" role="application" aria-label={`Dependency graph with ${view.nodes.length} nodes`}>
             <ReactFlow
               nodes={nodes}
               edges={edges}
@@ -169,27 +173,27 @@ function Body({ scanId }: { scanId: string }) {
               colorMode={document.documentElement.classList.contains("dark") ? "dark" : "light"}
               proOptions={{ hideAttribution: true }}
             >
-              <Background variant={BackgroundVariant.Dots} gap={22} size={1} color="rgb(124 138 160 / .35)" />
+              <Background variant={BackgroundVariant.Dots} gap={20} size={1} color={dark ? "#33373e" : "#cdd3d9"} />
               <Controls showInteractive={false} />
-              <MiniMap pannable zoomable nodeColor={(n) => ((n.data as any).severity ? SEV_COLOR[(n.data as any).severity as keyof typeof SEV_COLOR] : "#64748b")} />
+              <MiniMap pannable zoomable style={{ width: 150, height: 100, background: dark ? "#1f2226" : "#f8f9fa", border: `1px solid ${dark ? "#2f333a" : "#cdd3d9"}`, borderRadius: 3 }} maskColor={dark ? "rgba(20,22,25,.55)" : "rgba(226,229,232,.55)"} nodeColor={(n) => ((n.data as any).severity ? SEV_COLOR[(n.data as any).severity as keyof typeof SEV_COLOR] : OFF)} />
             </ReactFlow>
           </div>
 
-          <aside className="space-y-4" aria-live="polite">
+          <aside className="space-y-3" aria-live="polite">
             <Card tone="low">
               <Label>Legend</Label>
-              <ul className="mt-3 space-y-2 text-xs text-muted">
-                <li className="flex items-center gap-2"><span className="h-3 w-5 rounded border-2" style={{ borderColor: SEV_COLOR.critical }} /> border colour = highest advisory severity</li>
+              <ul className="mt-2 space-y-1.5 text-xs text-muted">
+                <li className="flex items-center gap-2"><span className="h-3 w-5 rounded-[2px] border-[1.5px]" style={{ borderColor: SEV_COLOR.critical }} /> border colour = highest advisory severity</li>
                 <li className="flex items-center gap-2"><span className="w-5 border-t-2 border-dashed border-muted" /> dev dependency · <span className="w-5 border-t-2 border-dotted border-muted" /> optional</li>
                 <li className="flex items-center gap-2"><span className="w-5 border-t-2 border-dashed border-warn" /> inferred (not declared) relation</li>
                 <li><span className="font-semibold text-warn">?</span> advisory state unknown for that package</li>
               </ul>
-              <p className="mt-3 text-xs text-muted">{view.nodes.length} of {view.total_nodes} nodes shown · {view.analysis.has_cycles ? "cycles present (handled)" : "no cycles"} · max depth {String(view.analysis.max_depth)}</p>
+              <p className="mt-2 text-xs text-dim">{view.nodes.length} of {view.total_nodes} nodes shown · {view.analysis.has_cycles ? "cycles present (handled)" : "no cycles"} · max depth {String(view.analysis.max_depth)}</p>
             </Card>
 
             {node && (
               <Card>
-                <div className="flex items-start justify-between gap-2"><h3 className="text-lg font-semibold">{node.label}</h3>{node.severity && <SeverityChip level={node.severity} />}</div>
+                <div className="flex items-start justify-between gap-2"><h3 className="text-[13px] font-semibold">{node.label}</h3>{node.severity && <SeverityChip level={node.severity} />}</div>
                 <p className="font-mono text-xs text-muted">{node.version ?? node.kind} · {node.ecosystem}</p>
                 <div className="mt-3 flex flex-wrap gap-1.5"><Chip tone="info">{node.scopes[0] ?? "—"}</Chip><Chip>{node.direct ? "direct" : `depth ${node.depth ?? "?"}`}</Chip>{node.findings > 0 && <Chip tone="warn">{node.findings} advisor{node.findings > 1 ? "ies" : "y"}</Chip>}</div>
                 {anc && <p className="mt-3 text-xs text-muted">Highlighted: {anc.nodes.size - 1} package(s) on paths to this node.</p>}
@@ -203,7 +207,7 @@ function Body({ scanId }: { scanId: string }) {
             {edge && (
               <Card>
                 <Label>Relation</Label>
-                <p className="mt-2 text-sm"><span className="font-semibold">{nameOf(edge.source)}</span> → <span className="font-semibold">{nameOf(edge.target)}</span></p>
+                <p className="mt-2 text-[12.5px]"><span className="font-semibold">{nameOf(edge.source)}</span> → <span className="font-semibold">{nameOf(edge.target)}</span></p>
                 <dl className="mt-3 grid grid-cols-[100px_1fr] gap-y-1.5 text-xs">
                   <dt className="text-muted">Type</dt><dd>{edge.type}</dd>
                   <dt className="text-muted">Constraint</dt><dd className="font-mono">{edge.constraint ?? "—"}</dd>
@@ -212,7 +216,7 @@ function Body({ scanId }: { scanId: string }) {
                 </dl>
               </Card>
             )}
-            {!node && !edge && <p className="px-1 text-sm text-muted">Select a node or an edge for details. Use the search box to locate a package.</p>}
+            {!node && !edge && <p className="px-1 text-[12.5px] text-muted">Select a node or an edge for details. Use the search box to locate a package.</p>}
           </aside>
         </div>
       )}

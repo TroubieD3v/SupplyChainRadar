@@ -24,7 +24,7 @@ export function RequireScan({ children }: { children: (scan: ScanMeta) => ReactN
     );
   if (["queued", "parsing", "enriching", "analyzing"].includes(scan.state))
     return (
-      <div className="rounded-3xl bg-surface-low p-8">
+      <div className="rounded-[3px] bg-surface-low p-8">
         <StateChip state={scan.state} />
         <p className="mt-3 text-muted">The scan is running. This page updates automatically.</p>
       </div>

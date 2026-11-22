@@ -8,6 +8,7 @@ import { RequireScan } from "../components/RequireScan";
 import { Card, Chip, Empty, ErrorBox, Input, Note, PageHeader, Progress, Select, SeverityChip, Spinner, cx } from "../components/ui";
 
 const SEVS: Severity[] = ["critical", "high", "medium", "low", "unknown"];
+const TH = "border-b border-outline px-3 py-1.5 text-left text-xs font-medium text-muted";
 
 export default function Findings() {
   return <RequireScan>{(scan) => <Body scanId={scan.id} />}</RequireScan>;
@@ -36,56 +37,93 @@ function Body({ scanId }: { scanId: string }) {
 
   return (
     <>
-      <PageHeader eyebrow={<Chip tone="accent">Confirmed advisory matches</Chip>} title="Findings">
+      <PageHeader eyebrow={<Chip>Confirmed advisory matches</Chip>} title="Findings">
         Each finding is a published advisory matched to an exact package version — with its evidence, the dependency path that brought it in, and what could fix it. Presence is not proof of exploitability.
       </PageHeader>
 
       {cov && gaps + cov.unresolved > 0 && (
-        <div className="mb-5"><Note tone="warn" title="This list is not exhaustive">{gaps} package(s) were not evaluated, unsupported or errored and {cov.unresolved} are unresolved. Findings for them are <b>unknown</b>, not absent.</Note></div>
+        <div className="mb-2"><Note tone="warn" title="This list is not exhaustive">{gaps} package(s) were not evaluated, unsupported or errored and {cov.unresolved} are unresolved. Findings for them are <b>unknown</b>, not absent.</Note></div>
       )}
 
-      <Card tone="low" className="mb-5 !p-4">
-        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Severity filter">
-          {SEVS.map((s) => <button key={s} aria-pressed={sevs.includes(s)} onClick={() => toggle(s)} className={cx("rounded-full transition", sevs.includes(s) ? "ring-2 ring-accent" : "opacity-70 hover:opacity-100")}><SeverityChip level={s} /></button>)}
-          <div className="relative ml-auto min-w-[200px] flex-1 sm:max-w-xs">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden />
-            <Input aria-label="Search findings" className="!py-2 !pl-9" placeholder="Package, advisory id, alias…" value={q} onChange={(e) => update("q", e.target.value || null)} />
+      <Card className="!p-0">
+        <div className="flex flex-wrap items-center gap-2 border-b border-outline px-3 py-1.5">
+          <div className="flex flex-wrap items-center gap-1" role="group" aria-label="Severity filter">
+            {SEVS.map((s) => (
+              <button
+                key={s}
+                aria-pressed={sevs.includes(s)}
+                onClick={() => toggle(s)}
+                className={cx("flex h-6 items-center rounded-[3px] border px-2 transition-colors", sevs.includes(s) ? "border-accent/60 bg-accent-soft" : "border-outline hover:bg-surface-high")}
+              >
+                <SeverityChip level={s} />
+              </button>
+            ))}
           </div>
-          <Select aria-label="Scope" className="!w-auto !py-2" value={scope} onChange={(e) => update("scope", e.target.value || null)}><option value="">Any scope</option><option>runtime</option><option>dev</option><option>optional</option></Select>
-          <Select aria-label="Triage status" className="!w-auto !py-2" value={status} onChange={(e) => update("status", e.target.value || null)}><option value="">Any status</option><option value="open">open</option><option value="needs_review">needs review</option><option value="accepted_risk">accepted risk</option><option value="false_positive">false positive</option><option value="not_affected">not affected</option></Select>
+          <div className="relative ml-auto min-w-[200px] flex-1 sm:max-w-xs">
+            <Search className="pointer-events-none absolute left-2 top-1/2 h-3 w-3 -translate-y-1/2 text-dim" aria-hidden />
+            <Input aria-label="Search findings" className="!pl-6" placeholder="Package, advisory id, alias…" value={q} onChange={(e) => update("q", e.target.value || null)} />
+          </div>
+          <Select aria-label="Scope" className="!w-auto" value={scope} onChange={(e) => update("scope", e.target.value || null)}><option value="">Any scope</option><option>runtime</option><option>dev</option><option>optional</option></Select>
+          <Select aria-label="Triage status" className="!w-auto" value={status} onChange={(e) => update("status", e.target.value || null)}><option value="">Any status</option><option value="open">open</option><option value="needs_review">needs review</option><option value="accepted_risk">accepted risk</option><option value="false_positive">false positive</option><option value="not_affected">not affected</option></Select>
         </div>
-      </Card>
 
-      {error && <ErrorBox error={error} onRetry={reload} />}
-      {loading && !data && <Spinner />}
-      {data && data.items.length === 0 && (
-        <Empty icon={<ShieldCheck className="h-6 w-6" />} title={sevs.length || q || scope || status ? "No findings match these filters" : "No advisories matched"}>
-          {sevs.length || q || scope || status ? "Clear a filter to see more." : gaps + cov!.unresolved > 0 ? "Nothing matched the packages that could be evaluated, but coverage is incomplete — this is not a clean result." : "No known advisory matched any package in the data source used for this scan. That is not proof the packages are safe."}
-        </Empty>
-      )}
-      <ul className="space-y-3">
-        {data?.items.map((f) => (
-          <li key={f.id}>
-            <button onClick={() => update("open", f.id)} className="w-full rounded-3xl border border-outline/40 bg-surface p-5 text-left transition hover:border-accent/60 hover:bg-surface-low">
-              <div className="flex flex-wrap items-center gap-2">
-                <SeverityChip level={f.advisory.severity.level} />
-                <span className="font-headline text-lg font-semibold">{f.package}</span>
-                <span className="font-mono text-sm text-muted">{f.version}</span>
-                <span className="ml-auto flex items-center gap-2">
-                  {f.triage.status !== "open" && <Chip tone={f.triage.expired ? "danger" : "info"}>{f.triage.expired ? "expired · " : ""}{f.triage.status.replace("_", " ")}</Chip>}
-                  <Chip tone={f.scopes[0] === "runtime" ? "accent" : "info"}>{f.scopes[0]}</Chip>
-                  <Chip>{f.direct ? "direct" : "transitive"}</Chip>
-                </span>
-              </div>
-              <div className="mt-2 text-sm"><span className="font-semibold">{f.advisory.id}</span> <span className="text-muted">{[...f.advisory.aliases].slice(0, 2).join(", ")}</span> — {f.advisory.summary ?? "no summary"}</div>
-              <div className="mt-3 grid items-center gap-3 text-xs text-muted sm:grid-cols-[1fr_180px]">
-                <div className="truncate font-mono">{f.path_labels?.[0]?.join(" → ") ?? "no dependency path"}{f.paths.total_found > 1 && <span className="ml-2 text-warn">+{f.paths.total_found - 1} more path{f.paths.total_found > 2 ? "s" : ""}</span>}</div>
-                <div className="flex items-center gap-2"><Progress value={f.priority.score ?? 0} tone={f.advisory.severity.level === "critical" ? "danger" : "warn"} label="priority" /><span className="w-12 text-right font-semibold text-ink">{f.priority.score ?? "—"}</span></div>
-              </div>
-            </button>
-          </li>
-        ))}
-      </ul>
+        {error && <div className="p-3"><ErrorBox error={error} onRetry={reload} /></div>}
+        {loading && !data && <div className="px-3"><Spinner /></div>}
+        {data && data.items.length === 0 && (
+          <div className="p-3">
+            <Empty icon={<ShieldCheck className="h-6 w-6" />} title={sevs.length || q || scope || status ? "No findings match these filters" : "No advisories matched"}>
+              {sevs.length || q || scope || status ? "Clear a filter to see more." : gaps + cov!.unresolved > 0 ? "Nothing matched the packages that could be evaluated, but coverage is incomplete — this is not a clean result." : "No known advisory matched any package in the data source used for this scan. That is not proof the packages are safe."}
+            </Empty>
+          </div>
+        )}
+        {data && data.items.length > 0 && (
+          <table className="w-full table-fixed text-[12.5px]">
+            <thead>
+              <tr>
+                <th className={cx(TH, "w-[92px]")}>Severity</th>
+                <th className={cx(TH, "w-[200px]")}>Component</th>
+                <th className={TH}>Advisory</th>
+                <th className={cx(TH, "w-[84px]")}>Scope</th>
+                <th className={cx(TH, "w-[26%]")}>Introduced by</th>
+                <th className={cx(TH, "w-[110px]")}>Analysis</th>
+                <th className={cx(TH, "w-[120px]")}>Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.items.map((f) => (
+                <tr key={f.id} onClick={() => update("open", f.id)} className={cx("cursor-pointer border-b border-line-soft last:border-b-0", open === f.id ? "bg-accent-soft/60" : "hover:bg-surface-high/50")}>
+                  <td className="px-3 py-1.5"><SeverityChip level={f.advisory.severity.level} /></td>
+                  <td className="truncate px-3 py-1.5">
+                    <button onClick={(e) => { e.stopPropagation(); update("open", f.id); }} className="text-left text-accent hover:underline">
+                      {f.package}
+                    </button>
+                    <span className="ml-1.5 font-mono text-[11.5px] text-muted">{f.version}</span>
+                  </td>
+                  <td className="truncate px-3 py-1.5" title={f.advisory.summary ?? undefined}>
+                    <span className="font-mono text-[11.5px]">{f.advisory.id}</span> <span className="text-muted">{f.advisory.summary ?? "no summary"}</span>
+                  </td>
+                  <td className="px-3 py-1.5 text-xs text-muted">{f.scopes[0]}</td>
+                  <td className="truncate px-3 py-1.5 font-mono text-[11px] text-muted" title={f.path_labels?.[0]?.join(" → ")}>
+                    <span className="mr-1 font-sans text-xs">{f.direct ? "direct" : "transitive"}</span>
+                    {f.path_labels?.[0]?.slice(1, -1).join(" → ") || ""}
+                    {f.paths.total_found > 1 && <span className="ml-1 font-sans text-warn">+{f.paths.total_found - 1}</span>}
+                  </td>
+                  <td className="px-3 py-1.5">
+                    {f.triage.status === "open" ? <span className="text-xs text-dim">not set</span> : <Chip tone={f.triage.expired ? "danger" : "info"}>{f.triage.expired ? "expired · " : ""}{f.triage.status.replace("_", " ")}</Chip>}
+                  </td>
+                  <td className="px-3 py-1.5">
+                    <div className="flex items-center gap-2">
+                      <Progress value={f.priority.score ?? 0} tone={f.advisory.severity.level === "critical" ? "danger" : "warn"} label="priority" />
+                      <span className="w-8 text-right font-mono text-xs">{f.priority.score ?? "—"}</span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {data && data.items.length > 0 && <div className="border-t border-outline px-3 py-1.5 text-[11px] text-dim">{data.items.length} of {data.total} findings</div>}
+      </Card>
       <FindingDrawer id={open} onClose={() => update("open", null)} onChanged={reload} />
     </>
   );

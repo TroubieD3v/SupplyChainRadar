@@ -39,11 +39,12 @@ test("capture screenshots", async ({ page }) => {
   await page.screenshot({ path: `${OUT}/graph.png` });
 
   await page.getByRole("link", { name: "Remediation Studio" }).first().click();
-  await page.getByLabel("Package").first().selectOption({ index: 1 });
+  await expect(page).toHaveURL(/remediation/);
+  await page.getByLabel("Package", { exact: true }).first().selectOption({ index: 1 });
   await page.waitForTimeout(300);
-  const pkgs = await page.getByLabel("Package").first().locator("option").allTextContents();
+  const pkgs = await page.getByLabel("Package", { exact: true }).first().locator("option").allTextContents();
   const parserIdx = pkgs.findIndex((t) => t.startsWith("demo-parser"));
-  await page.getByLabel("Package").first().selectOption({ index: parserIdx });
+  await page.getByLabel("Package", { exact: true }).first().selectOption({ index: parserIdx });
   await page.getByLabel("Target version").fill("0.9.3");
   await page.getByRole("button", { name: "Simulate" }).click();
   await expect(page.getByText("Predicted (partial)").first()).toBeVisible();

@@ -38,7 +38,7 @@ function Body({ scan, projectName }: { scan: ScanMeta; projectName?: string }) {
                 <span className={"flex h-7 w-7 items-center justify-center rounded-full text-xs " + (done ? "bg-accent text-on-accent" : "bg-surface-high text-muted") + (current ? " ring-2 ring-accent/50" : "")}>
                   {done ? <Check className="h-4 w-4" /> : <Circle className="h-3 w-3" />}
                 </span>
-                <span className={"text-sm font-semibold " + (done ? "" : "text-muted")}>{st === "completed" && scan.state === "partial" ? "partial" : st}</span>
+                <span className={"text-[12.5px] font-semibold " + (done ? "" : "text-muted")}>{st === "completed" && scan.state === "partial" ? "partial" : st}</span>
                 {i < STAGES.length - 1 && <span className="mx-1 h-px w-6 bg-outline" aria-hidden />}
               </li>
             );
@@ -52,7 +52,7 @@ function Body({ scan, projectName }: { scan: ScanMeta; projectName?: string }) {
       {error && <ErrorBox error={error} onRetry={reload} />}
 
       {cov && (
-        <section className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <section className="mb-3 grid grid-cols-2 gap-3 md:grid-cols-4">
           <Stat label="Packages" value={cov.total_packages} sub={`${data?.artifacts?.length ?? "…"} input file(s)`} />
           <Stat label="Evaluated" value={`${cov.percent_evaluated}%`} tone="accent" sub={`evaluated ${cov.evaluated} · cached ${cov.cached}`} />
           <Stat label="Gaps" value={cov.not_evaluated + cov.unsupported + cov.error} tone={cov.not_evaluated + cov.unsupported + cov.error ? "warn" : undefined} sub={`not evaluated ${cov.not_evaluated} · unsupported ${cov.unsupported} · errors ${cov.error}`} />
@@ -61,7 +61,7 @@ function Body({ scan, projectName }: { scan: ScanMeta; projectName?: string }) {
       )}
 
       {cov && cov.total_packages > 0 && (
-        <Card tone="low" className="mb-8">
+        <Card tone="low" className="mb-3">
           <Label>Evaluation coverage</Label>
           <div className="mt-3 flex h-3 overflow-hidden rounded-full bg-surface-high" role="img" aria-label="Coverage breakdown">
             <div className="bg-accent" style={{ width: `${((cov.evaluated + cov.cached) / cov.total_packages) * 100}%` }} title="evaluated" />
@@ -75,14 +75,14 @@ function Body({ scan, projectName }: { scan: ScanMeta; projectName?: string }) {
             <span><span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-info" />unsupported / unresolved</span>
             <span><span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-danger" />error</span>
           </div>
-          {cov.notes.map((n, i) => <p key={i} className="mt-2 text-sm text-muted">• {n}</p>)}
+          {cov.notes.map((n, i) => <p key={i} className="mt-2 text-[12.5px] text-muted">• {n}</p>)}
         </Card>
       )}
 
       {src && (
-        <Card className="mb-8">
+        <Card className="mb-3">
           <Label>Advisory data source</Label>
-          <dl className="mt-3 grid grid-cols-[150px_1fr] gap-y-2 text-sm">
+          <dl className="mt-3 grid grid-cols-[150px_1fr] gap-y-2 text-[12.5px]">
             <dt className="text-muted">Mode</dt><dd className="font-semibold">{src.mode.replace("_", " ")} · {src.provider}</dd>
             {src.snapshot_id && <><dt className="text-muted">Snapshot</dt><dd className="font-mono text-xs">{src.snapshot_id} ({src.snapshot_generated})</dd></>}
             {src.fetched_at && <><dt className="text-muted">Fetched</dt><dd>{fmtDate(src.fetched_at)}</dd></>}
@@ -90,22 +90,22 @@ function Body({ scan, projectName }: { scan: ScanMeta; projectName?: string }) {
             <dt className="text-muted">Checksum</dt><dd className="break-all font-mono text-xs">{scan.summary?.checksum}</dd>
             {data?.engine_version && <><dt className="text-muted">Engine</dt><dd>{data.engine_version}</dd></>}
           </dl>
-          {src.notes.map((n, i) => <p key={i} className="mt-3 text-sm text-muted">{n}</p>)}
+          {src.notes.map((n, i) => <p key={i} className="mt-3 text-[12.5px] text-muted">{n}</p>)}
         </Card>
       )}
 
       {data?.artifacts && (
-        <section className="mb-8">
-          <h2 className="mb-3 text-xl font-semibold">Inputs & provenance</h2>
+        <section className="mb-3">
+          <h2 className="mb-3 text-[13px] font-semibold">Inputs & provenance</h2>
           <div className="space-y-3">
             {data.artifacts.map((a: any, i: number) => (
               <Card key={i} tone="low">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="font-mono text-sm font-semibold">{a.source_label}</div>
+                  <div className="font-mono text-[12.5px] font-semibold">{a.source_label}</div>
                   <div className="flex gap-2"><Chip tone="info">{a.format} {a.format_version ?? ""}</Chip><Chip tone={a.coverage === "full" ? "accent" : "warn"}>coverage {a.coverage}</Chip><Chip tone={a.graph_complete ? "accent" : "warn"}>graph {a.graph_complete ? "complete" : "partial"}</Chip></div>
                 </div>
                 <p className="mt-2 text-xs text-muted">parser {a.parser} {a.parser_version} · {a.components} packages · {a.edges} edges · sha256 <span className="font-mono">{a.checksum.slice(0, 16)}…</span></p>
-                {a.graph_note && <p className="mt-1 text-sm text-warn">{a.graph_note}</p>}
+                {a.graph_note && <p className="mt-1 text-[12.5px] text-warn">{a.graph_note}</p>}
                 {a.warnings.length > 0 && <ul className="mt-3 list-inside list-disc space-y-0.5 text-xs text-muted">{a.warnings.slice(0, 8).map((w: string, j: number) => <li key={j}>{w}</li>)}{a.warnings.length > 8 && <li>… {a.warnings.length - 8} more</li>}</ul>}
               </Card>
             ))}
@@ -114,7 +114,7 @@ function Body({ scan, projectName }: { scan: ScanMeta; projectName?: string }) {
       )}
 
       {data?.limitations && <Note tone="info" title="What this scan does not tell you"><ul className="list-inside list-disc space-y-1">{data.limitations.map((l: string, i: number) => <li key={i}>{l}</li>)}</ul></Note>}
-      {!cov && scan.inputs.length > 0 && <Card tone="low"><Label>Inputs</Label><ul className="mt-2 text-sm">{scan.inputs.map((i) => <li key={i.sha256} className="font-mono text-xs">{i.name} · sha256 {i.sha256.slice(0, 16)}…</li>)}</ul></Card>}
+      {!cov && scan.inputs.length > 0 && <Card tone="low"><Label>Inputs</Label><ul className="mt-2 text-[12.5px]">{scan.inputs.map((i) => <li key={i.sha256} className="font-mono text-xs">{i.name} · sha256 {i.sha256.slice(0, 16)}…</li>)}</ul></Card>}
     </>
   );
 }
