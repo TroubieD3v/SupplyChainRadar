@@ -49,43 +49,43 @@ export default function Reports() {
 
       <section className="mb-12">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
-          <h2 className="text-2xl font-semibold">Download for the selected scan</h2>
-          {scan && <span className="text-sm text-muted">{scan.label ?? "scan"} · {scan.state}</span>}
+          <h2 className="text-[13px] font-semibold">Download for the selected scan</h2>
+          {scan && <span className="text-[12.5px] text-muted">{scan.label ?? "scan"} · {scan.state}</span>}
         </div>
         {!ready && <Note tone="warn">Select a finished scan (top bar) to enable downloads.</Note>}
         {err && <div className="mb-4"><ErrorBox error={err} /></div>}
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {FORMATS.map((f) => (
-            <Card key={f.id} tone="low" className="flex flex-col justify-between !p-5">
-              <div><div className="flex h-11 w-11 items-center justify-center rounded-xl bg-surface-high text-accent"><f.icon className="h-5 w-5" aria-hidden /></div><h3 className="mt-4 text-lg font-semibold">{f.title}</h3><p className="mt-1 text-sm text-muted">{f.text}</p></div>
+            <Card key={f.id} tone="low" className="flex flex-col justify-between !p-3">
+              <div><div className="flex h-8 w-8 items-center justify-center rounded-[3px] bg-surface-high text-accent"><f.icon className="h-5 w-5" aria-hidden /></div><h3 className="mt-4 text-[13px] font-semibold">{f.title}</h3><p className="mt-1 text-[12.5px] text-muted">{f.text}</p></div>
               <Button className="mt-5" variant="soft" disabled={!ready} loading={busy === f.id} onClick={() => dl(f)}>Download .{f.ext}</Button>
             </Card>
           ))}
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-2">
+      <section className="grid gap-3 lg:grid-cols-2">
         <Card>
-          <h2 className="text-xl font-semibold">Advisory source</h2>
-          <p className="mt-1 text-sm text-muted">Default for new imports. “Offline” is the safe default: nothing leaves this machine.</p>
+          <h2 className="text-[13px] font-semibold">Advisory source</h2>
+          <p className="mt-1 text-[12.5px] text-muted">Default for new imports. “Offline” is the safe default: nothing leaves this machine.</p>
           {!prov && !error && <Spinner />}
           {error && <ErrorBox error={error} onRetry={reload} />}
           {prov && (
             <div className="mt-4 space-y-2">
               {prov.modes.map((m: any) => (
-                <label key={m.id} className="flex cursor-pointer items-start gap-3 rounded-2xl bg-surface-low p-4 hover:bg-surface-high">
+                <label key={m.id} className="flex cursor-pointer items-start gap-3 rounded-[3px] bg-surface-low p-4 hover:bg-surface-high">
                   <input type="radio" name="enrichment" className="mt-1 accent-[rgb(var(--accent))]" checked={prov.default_enrichment === m.id} onChange={() => setDefault(m.id)} />
-                  <div><div className="flex items-center gap-2 font-semibold">{m.label}{m.network ? <Chip tone="warn">network</Chip> : <Chip tone="accent">offline</Chip>}</div><div className="text-sm text-muted">{m.description}</div></div>
+                  <div><div className="flex items-center gap-2 font-semibold">{m.label}{m.network ? <Chip tone="warn">network</Chip> : <Chip tone="accent">offline</Chip>}</div><div className="text-[12.5px] text-muted">{m.description}</div></div>
                 </label>
               ))}
             </div>
           )}
         </Card>
-        <div className="space-y-6">
+        <div className="space-y-3">
           <Card tone="low">
-            <h2 className="text-xl font-semibold">Providers & privacy</h2>
+            <h2 className="text-[13px] font-semibold">Providers & privacy</h2>
             {prov && (
-              <dl className="mt-4 grid grid-cols-[130px_1fr] gap-y-2 text-sm">
+              <dl className="mt-4 grid grid-cols-[130px_1fr] gap-y-2 text-[12.5px]">
                 <dt className="text-muted">OSV endpoint</dt><dd className="break-all font-mono text-xs">{prov.osv.base_url}</dd>
                 <dt className="text-muted">Redirects</dt><dd>never followed</dd>
                 <dt className="text-muted">Cached lookups</dt><dd>{prov.osv.cached_package_queries}</dd>
@@ -93,18 +93,18 @@ export default function Reports() {
                 <dt className="text-muted">API access</dt><dd>{prov.auth === "token" ? "bearer token required for changes" : "loopback only, no token"}</dd>
               </dl>
             )}
-            {prov && <p className="mt-4 text-sm leading-relaxed text-muted">{prov.privacy}</p>}
-            <p className="mt-2 text-sm text-muted">No telemetry is collected.</p>
+            {prov && <p className="mt-4 text-[12.5px] leading-relaxed text-muted">{prov.privacy}</p>}
+            <p className="mt-2 text-[12.5px] text-muted">No telemetry is collected.</p>
           </Card>
           <Card tone="low">
-            <h2 className="text-xl font-semibold">Interface</h2>
-            <div className="mt-4 flex items-center justify-between"><div><div className="font-semibold">Dark theme</div><div className="text-sm text-muted">Dark is the default; switch any time.</div></div><Toggle checked={theme === "dark"} onChange={toggle} label="Dark theme" /></div>
-            <div className="mt-6 space-y-3">
+            <h2 className="text-[13px] font-semibold">Interface</h2>
+            <div className="mt-4 flex items-center justify-between"><div><div className="font-semibold">Dark theme</div><div className="text-[12.5px] text-muted">Dark is the default; switch any time.</div></div><Toggle checked={theme === "dark"} onChange={toggle} label="Dark theme" /></div>
+            <div className="mt-3 space-y-3">
               <Field label="API token (only if the server sets SCRADAR_API_TOKEN)"><Input type="password" autoComplete="off" value={token} onChange={(e) => (setTok(e.target.value), setSaved(false))} placeholder="stored in this browser only" /></Field>
               <Button size="sm" variant="soft" onClick={() => (setToken(token), setSaved(true))}>Save token</Button>
-              {saved && <span className="ml-3 text-sm text-accent">Saved locally.</span>}
+              {saved && <span className="ml-3 text-[12.5px] text-accent">Saved locally.</span>}
             </div>
-            {settings && <div className="mt-6"><Label>Retention</Label><p className="mt-1 text-sm text-muted">Keeps the latest {settings.retention_scans_per_project} scans per project. Uploads are limited to {Math.round(settings.limits.max_upload_bytes / 1048576)} MB per file and {settings.limits.max_files} files.</p>
+            {settings && <div className="mt-3"><Label>Retention</Label><p className="mt-1 text-[12.5px] text-muted">Keeps the latest {settings.retention_scans_per_project} scans per project. Uploads are limited to {Math.round(settings.limits.max_upload_bytes / 1048576)} MB per file and {settings.limits.max_files} files.</p>
               <Select aria-label="Retention" className="mt-2 !w-auto" value={settings.retention_scans_per_project} onChange={async (e) => (await send("PUT", "/settings", { retention_scans_per_project: Number(e.target.value) }), reloadSettings())}>{[10, 25, 50, 100, 500].map((n) => <option key={n} value={n}>{n} scans</option>)}</Select></div>}
           </Card>
         </div>

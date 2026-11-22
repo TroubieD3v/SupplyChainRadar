@@ -1,82 +1,114 @@
 @import "tailwindcss";
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/manrope";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
 @import "@xyflow/react/dist/style.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Design tokens. Palette from the brand sheet:
- *   Primary #121212 · Secondary #008542 · Tertiary #D97706 · Neutral #64748B
- * Headline font: Manrope. Body/label font: Inter. Dark is the default theme.
+ * Graphite: neutral grey surfaces, hairline borders, colour reserved for severity and scan state.
+ * Values are RGB triplets so utilities can apply opacity (bg-danger/10). Dark is the default theme.
  */
 :root {
-  --bg: 232 240 255;
-  --surface-low: 244 247 255;
-  --surface: 255 255 255;
-  --surface-high: 219 231 253;
-  --surface-top: 203 219 248;
-  --outline: 184 200 226;
-  --text: 18 18 18;
-  --muted: 71 85 105;
-  --primary: 18 18 18;
+  --bg: 238 240 242;
+  --chrome: 226 229 232;
+  --surface-low: 241 243 245;
+  --surface: 248 249 250;
+  --surface-high: 226 229 232;
+  --surface-top: 205 211 217;
+  --outline: 205 211 217;
+  --line-soft: 223 227 231;
+  --text: 30 34 39;
+  --muted: 91 98 106;
+  --dim: 122 130 138;
+  --primary: 58 102 147;
   --on-primary: 255 255 255;
-  --accent: 0 133 66;
-  --accent-soft: 196 252 208;
+  --accent: 44 93 138;
+  --accent-soft: 219 229 239;
   --on-accent: 255 255 255;
-  --warn: 180 83 9;
-  --warn-soft: 255 236 214;
-  --danger: 185 28 28;
-  --danger-soft: 254 226 226;
-  --info: 51 72 98;
-  --info-soft: 219 231 253;
+  --ok: 59 106 74;
+  --ok-soft: 222 236 226;
+  --warn: 135 96 26;
+  --warn-soft: 244 236 220;
+  --danger: 168 64 47;
+  --danger-soft: 245 226 222;
+  --info: 85 104 122;
+  --info-soft: 226 231 236;
+  --sev-critical: 168 64 47;
+  --sev-high: 176 96 47;
+  --sev-medium: 135 96 26;
+  --sev-low: 85 104 122;
+  --sev-unknown: 138 144 150;
 }
 
 .dark {
-  --bg: 18 18 18;
-  --surface-low: 26 28 32;
-  --surface: 33 36 42;
-  --surface-high: 43 47 56;
-  --surface-top: 54 59 70;
-  --outline: 62 70 86;
-  --text: 238 241 246;
-  --muted: 148 163 184;
-  --primary: 238 241 246;
-  --on-primary: 18 18 18;
-  --accent: 76 198 127;
-  --accent-soft: 0 61 26;
-  --on-accent: 18 18 18;
-  --warn: 255 154 46;
-  --warn-soft: 74 40 6;
-  --danger: 248 113 113;
-  --danger-soft: 78 20 20;
-  --info: 148 163 184;
-  --info-soft: 30 45 68;
+  --bg: 25 27 30;
+  --chrome: 20 22 25;
+  --surface-low: 27 29 33;
+  --surface: 31 34 38;
+  --surface-high: 43 47 53;
+  --surface-top: 52 57 64;
+  --outline: 47 51 58;
+  --line-soft: 37 40 45;
+  --text: 213 215 218;
+  --muted: 141 147 154;
+  --dim: 107 113 120;
+  --primary: 62 100 137;
+  --on-primary: 242 245 248;
+  --accent: 143 180 216;
+  --accent-soft: 41 52 65;
+  --on-accent: 21 24 27;
+  --ok: 148 176 142;
+  --ok-soft: 35 43 35;
+  --warn: 208 168 102;
+  --warn-soft: 45 40 32;
+  --danger: 217 133 119;
+  --danger-soft: 46 35 33;
+  --info: 155 168 181;
+  --info-soft: 36 41 48;
+  --sev-critical: 217 120 105;
+  --sev-high: 214 150 106;
+  --sev-medium: 208 180 112;
+  --sev-low: 143 168 196;
+  --sev-unknown: 107 113 120;
 }
 
 @theme inline {
   --color-bg: rgb(var(--bg));
+  --color-chrome: rgb(var(--chrome));
   --color-surface-low: rgb(var(--surface-low));
   --color-surface: rgb(var(--surface));
   --color-surface-high: rgb(var(--surface-high));
   --color-surface-top: rgb(var(--surface-top));
   --color-outline: rgb(var(--outline));
+  --color-line-soft: rgb(var(--line-soft));
   --color-ink: rgb(var(--text));
   --color-muted: rgb(var(--muted));
+  --color-dim: rgb(var(--dim));
   --color-primary: rgb(var(--primary));
   --color-on-primary: rgb(var(--on-primary));
   --color-accent: rgb(var(--accent));
   --color-accent-soft: rgb(var(--accent-soft));
   --color-on-accent: rgb(var(--on-accent));
+  --color-ok: rgb(var(--ok));
+  --color-ok-soft: rgb(var(--ok-soft));
   --color-warn: rgb(var(--warn));
   --color-warn-soft: rgb(var(--warn-soft));
   --color-danger: rgb(var(--danger));
   --color-danger-soft: rgb(var(--danger-soft));
   --color-info: rgb(var(--info));
   --color-info-soft: rgb(var(--info-soft));
-  --font-headline: "Manrope Variable", "Inter Variable", system-ui, sans-serif;
-  --font-sans: "Inter Variable", system-ui, "Segoe UI", sans-serif;
-  --radius-card: 1.5rem;
+  --color-sev-critical: rgb(var(--sev-critical));
+  --color-sev-high: rgb(var(--sev-high));
+  --color-sev-medium: rgb(var(--sev-medium));
+  --color-sev-low: rgb(var(--sev-low));
+  --color-sev-unknown: rgb(var(--sev-unknown));
+  --font-headline: "IBM Plex Sans", system-ui, "Segoe UI", sans-serif;
+  --font-sans: "IBM Plex Sans", system-ui, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
 }
 
 html {
@@ -90,22 +122,20 @@ body {
   background: rgb(var(--bg));
   color: rgb(var(--text));
   font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-}
-h1,
-h2,
-h3,
-.font-headline {
-  font-family: var(--font-headline);
-  letter-spacing: -0.015em;
+  font-size: 13px;
+  line-height: 1.45;
+  font-feature-settings: "tnum";
 }
 ::selection {
-  background: rgb(var(--accent) / 0.35);
+  background: rgb(var(--accent-soft));
 }
 :focus-visible {
-  outline: 2px solid rgb(var(--accent));
-  outline-offset: 2px;
-  border-radius: 8px;
+  outline: 1px solid rgb(var(--accent));
+  outline-offset: 1px;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--surface-top)) transparent;
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -113,20 +143,23 @@ h3,
 .no-scrollbar {
   scrollbar-width: none;
 }
-.glass {
-  background: rgb(var(--bg) / 0.8);
-  backdrop-filter: blur(16px);
-}
 
 /* React Flow theming */
 .react-flow {
   --xy-background-color: transparent;
-  --xy-node-border-radius: 14px;
-  --xy-edge-stroke: rgb(var(--muted) / 0.55);
-  --xy-controls-button-background-color: rgb(var(--surface-high));
+  --xy-node-border-radius: 3px;
+  --xy-edge-stroke: rgb(var(--muted) / 0.5);
+  --xy-controls-button-background-color: rgb(var(--surface));
+  --xy-controls-button-background-color-hover: rgb(var(--surface-high));
   --xy-controls-button-color: rgb(var(--text));
   --xy-controls-button-border-color: rgb(var(--outline));
   --xy-minimap-background-color: rgb(var(--surface-low));
+}
+.react-flow__controls {
+  box-shadow: none;
+  border: 1px solid rgb(var(--outline));
+  border-radius: 3px;
+  overflow: hidden;
 }
 .react-flow__attribution {
   display: none;

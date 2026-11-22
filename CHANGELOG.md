@@ -1,5 +1,16 @@
 # Changelog
 
+
+## Unreleased
+
+### Changed
+- Interface redesign. Every project page opens with a project header: name, scan, state, a counter per severity
+  (each links to the filtered findings) and evaluated coverage. Findings are an audit table with component,
+  advisory, scope, introducing path, analysis state and priority; the overview uses a severity counter strip, a
+  trend chart and tables for top priorities and projects. Grouped sidebar with breadcrumbs, graphite dark theme
+  and a soft light theme, IBM Plex Sans and Mono, square graph nodes. The HTML report and the SVG graph export
+  follow the same palette; screenshots are regenerated.
+
 ## 1.0.0 — 2026-10-25
 
 First release.
